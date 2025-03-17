@@ -4,9 +4,10 @@ import CouponItem from "../components/CouponItem";
 import ListHeader from "../components/ListHeader.tsx";
 import { fetchCoupons } from "../api/api";
 import categoryMap from "../constants/CategoryMap.tsx";
+import {CouponProps} from "../constants/Coupon.tsx";
 
 const CouponPage: React.FC = () => {
-    const [coupons, setCoupons] = useState<CouponItemProps[]>([]);
+    const [coupons, setCoupons] = useState<CouponProps[]>([]);
     const [hasNext, setHasNext] = useState(true);
     const [lastCouponId, setLastCouponId] = useState<number | undefined>(undefined);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -47,11 +48,7 @@ const CouponPage: React.FC = () => {
         setLastCouponId(undefined);
         setHasNext(true);
         loadCoupons();
-    }, [selectedCategory]);
-
-    useEffect(() => {
-        console.log("Coupons List: ", coupons);
-    }, [coupons]);
+    }, [selectedCategory, coupons]);
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -74,7 +71,7 @@ const CouponPage: React.FC = () => {
             />
             <CouponList>
                 {coupons.length > 0 ? (
-                    coupons.map((coupon) => <CouponItem key={coupon.couponId} coupon={coupon} />)
+                    coupons.map((coupon) => <CouponItem key={coupon.betaCouponId} coupon={{ coupon }}  />)
                 ) : (
                     <EmptyMessage>쿠폰이 없습니다.</EmptyMessage>
                 )}
