@@ -14,7 +14,6 @@ const CouponPage: React.FC = () => {
     const observerRef = useRef<HTMLDivElement | null>(null);
     const isFetchingCoupons = useRef(false);
 
-    // ✅ API에서 쿠폰 데이터를 가져오는 함수
     const loadCoupons = async () => {
         if (!hasNext || isFetchingCoupons.current ) return; // 더 이상 데이터가 없으면 요청 X
         isFetchingCoupons.current = true;
