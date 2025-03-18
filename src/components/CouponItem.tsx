@@ -192,7 +192,8 @@ const Button = styled.button`
     line-height: 140%; /* 18.2px */
     letter-spacing: 0.26px;
     border: none;
-
+    min-width: fit-content;
+    
     @media (max-width: 400px) {
         font-size: 12px;
         padding: 4px 8px;
