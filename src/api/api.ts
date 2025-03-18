@@ -66,6 +66,18 @@ export const fetchCoupons = async ( betaCouponId? : number,
     }
 };
 
+export const fetchImage = async (image: string) : Promise<Blob> => {
+        const response = await apiClient.get(`/image/${image}`, {
+            responseType: "blob"
+        });
+
+        if(response.status !== 200){
+            throw new Error("Fail to fetch image");
+        }
+
+        return response.data;
+}
+
 export const callUseCoupons = async (betaCouponId : number) => {
     try{
         const response = await apiClient.put(`/api/beta/coupons/${betaCouponId}`);

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Popup from "./CouponPopup";
-import {callUseCoupons} from "../api/api";
+import {callUseCoupons, fetchImage} from "../api/api";
 import {Coupon} from "../constants/Coupon.tsx";
 
 interface CouponItemProps {
@@ -11,16 +11,12 @@ interface CouponItemProps {
 const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
 
     // 팝업열기
-    const handleOpenPopup = () => {
-        setIsPopupOpen(true);
-    }
-
+    const handleOpenPopup = () => {setIsPopupOpen(true); }
     // 팝업닫기
-    const handleClosePopup = () => {
-        setIsPopupOpen(false);
-    }
+    const handleClosePopup = () => {setIsPopupOpen(false);}
 
     const handleUseCoupons = async () => {
         try {
@@ -32,6 +28,14 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
         }
     }
 
+    useEffect ( () => {
+        async function loadImage() {
+            const blob = await fetchImage(coupon.image);
+            setImageSrc(URL.createObjectURL(blob));
+        }
+        loadImage();
+    });
+
     useEffect(() => {
         setIsUsed(coupon.isUsed);
     }, [coupon.isUsed]);
@@ -39,7 +43,9 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     return (
         <>
             <Container>
-                <Image src={`https://marketplace.inuappcenter.kr/image/${coupon.image}`} alt={coupon.couponName}/>
+                {imageSrc ?  (
+                    <Image src={imageSrc} alt={coupon.couponName}/>
+                ): (<PlaceHolder > Loading... </PlaceHolder>)}
                 <Content>
                     <Text>
                         <Store>{coupon.marketName}</Store>
@@ -82,6 +88,18 @@ const Image = styled.img`
 
     }
 `;
+
+
+const PlaceHolder = styled.div`
+    width: 100px;
+    height: 102px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    font-size: 12px;
+    color: #999;
+`
 
 const Content = styled.div`
     display: flex;
