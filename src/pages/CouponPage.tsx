@@ -4,10 +4,10 @@ import CouponItem from "../components/CouponItem";
 import ListHeader from "../components/ListHeader.tsx";
 import { fetchCoupons } from "../api/api";
 import categoryMap from "../constants/CategoryMap.tsx";
-import {CouponProps} from "../constants/Coupon.tsx";
+import {Coupon} from "../constants/Coupon.tsx";
 
 const CouponPage: React.FC = () => {
-    const [coupons, setCoupons] = useState<CouponProps[]>([]);
+    const [coupons, setCoupons] = useState<Coupon[]>([]);
     const [hasNext, setHasNext] = useState(true);
     const [lastCouponId, setLastCouponId] = useState<number | undefined>(undefined);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -28,7 +28,6 @@ const CouponPage: React.FC = () => {
             }); // 기존 쿠폰 + 새로운 쿠폰 추가
 
             setHasNext(data.hasNext);
-            console.log("가져온 데이터 ", data);
 
             // 마지막 쿠폰의 데이터 저장
             if (data.betaCouponResDtos.length > 0) {
@@ -48,8 +47,9 @@ const CouponPage: React.FC = () => {
         setLastCouponId(undefined);
         setHasNext(true);
         loadCoupons();
-    }, [selectedCategory, coupons]);
+    }, [selectedCategory]);
 
+    // 무한 스크롤
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             console.log("Observer", entries[0]);
@@ -71,7 +71,11 @@ const CouponPage: React.FC = () => {
             />
             <CouponList>
                 {coupons.length > 0 ? (
-                    coupons.map((coupon) => <CouponItem key={coupon.betaCouponId} coupon={{ coupon }}  />)
+                    coupons.map((coupon) => (
+                        <CouponItem
+                            key={coupon.betaCouponId}
+                            coupon={coupon}
+                        />))
                 ) : (
                     <EmptyMessage>쿠폰이 없습니다.</EmptyMessage>
                 )}

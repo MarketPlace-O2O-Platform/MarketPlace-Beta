@@ -6,7 +6,3 @@ export interface Coupon{
         image: string;
         isUsed: boolean;
 }
-
-export interface CouponProps {
-    coupon: Coupon;
-}

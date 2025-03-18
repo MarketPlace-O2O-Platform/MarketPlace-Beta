@@ -1,4 +1,5 @@
 import axios from "axios";
+import {Coupon} from "../constants/Coupon.tsx";
 
 const API_BASE_URL = "https://marketplace.inuappcenter.kr";
 
@@ -43,11 +44,16 @@ export const login = async (studentId: string, password: string) => {
 export const fetchCoupons = async ( betaCouponId? : number,
                                     category?: string,
                                     size: number = 10)
-    : Promise<{ betaCouponResDtos: CouponItemProps["coupon"][], hasNext: boolean }>=> {
+    : Promise<{ betaCouponResDtos: Coupon[], hasNext: boolean }>=> {
     try {
         // 요청할 쿼리 파라미터 생성
-        const params: Record<string, any> = { };
-        if (betaCouponId) params.betaCouponId = betaCouponId;
+        const params: {
+            betaCouponId?: number;
+            category?: string;
+            size: number;
+        } = { size };
+
+        if (betaCouponId !== undefined) params.betaCouponId = betaCouponId;
         if (category && category !== "") params.category = category;
         params.size = size;
 

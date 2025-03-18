@@ -2,9 +2,13 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Popup from "./CouponPopup";
 import {callUseCoupons} from "../api/api";
-import { CouponProps} from "../constants/Coupon.tsx";
+import {Coupon} from "../constants/Coupon.tsx";
 
-const CouponItem: React.FC<CouponProps> = ({coupon}) => {
+interface CouponItemProps {
+    coupon: Coupon;
+}
+
+const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
