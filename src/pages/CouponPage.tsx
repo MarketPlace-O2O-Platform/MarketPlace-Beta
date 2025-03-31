@@ -5,6 +5,7 @@ import ListHeader from "../components/ListHeader.tsx";
 import { fetchCoupons } from "../api/api";
 import categoryMap from "../constants/CategoryMap.tsx";
 import {Coupon} from "../constants/Coupon.tsx";
+import kakaoLink from "../../public/currumi_kakao.svg";
 
 const CouponPage: React.FC = () => {
     const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -68,6 +69,9 @@ const CouponPage: React.FC = () => {
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
             />
+            <KakaoLink href="http://pf.kakao.com/_XkZnn" target="_blank" rel="noopener noreferrer">
+                <Image src={kakaoLink} alt="Kakao" />
+            </KakaoLink>
             <CouponList>
                 {coupons.length > 0 ? (
                     coupons.map((coupon) => (
@@ -90,6 +94,16 @@ const Container = styled.div`
     min-height: 100vh;
     flex-direction: column;
     background-color: #FAFAFA;
+`;
+
+const KakaoLink = styled.a`
+    display: block;
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const CouponList = styled.div`
