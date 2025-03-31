@@ -34,7 +34,7 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
             setImageSrc(URL.createObjectURL(blob));
         }
         loadImage();
-    });
+    },[coupon.image]);
 
     useEffect(() => {
         setIsUsed(coupon.isUsed);
@@ -178,9 +178,10 @@ const UseContent = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-    flex: 1;
+    flex: 1; 
     width: 100%;
+    justify-content: flex-end;  // 오른쪽으로 맞추고
+
 `;
 
 const Button = styled.button`
@@ -193,6 +194,8 @@ const Button = styled.button`
     letter-spacing: 0.26px;
     border: none;
     min-width: fit-content;
+    margin: 0 10% ; // 버튼 양 공백을 줌 
+
     
     @media (max-width: 400px) {
         font-size: 12px;
