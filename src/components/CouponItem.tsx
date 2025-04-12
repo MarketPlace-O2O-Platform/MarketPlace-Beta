@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Popup from "./CouponPopup";
+import KakaoPopup from "./KakaoPopup";
 import {callUseCoupons, fetchImage} from "../api/api";
 import {Coupon} from "../constants/Coupon.tsx";
 
@@ -11,12 +12,23 @@ interface CouponItemProps {
 const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isKakaoPopupOpen, setIsKakaoPopupOpen] = useState(false);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
 
     // 팝업열기
     const handleOpenPopup = () => {setIsPopupOpen(true); }
     // 팝업닫기
     const handleClosePopup = () => {setIsPopupOpen(false);}
+
+    // KakaoInvitePopup 열기
+    const handleOpenKakaoPopup = () => {
+        setIsKakaoPopupOpen(true);
+    };
+
+    // 팝업 닫기
+    const handleCloseKakaoPopup = () => {
+        setIsKakaoPopupOpen(false);
+    };
 
     const handleUseCoupons = async () => {
         try {
@@ -55,14 +67,20 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
 
                     <UseContent>
                         <Divider/>
-                        <Button disabled={isUsed} onClick={handleOpenPopup}>
-                            {isUsed ? "사용완료" : "사용하기"}
+                        <Button onClick={isUsed ? handleOpenKakaoPopup : handleOpenPopup}>
+                            {isUsed ? "친추하기" : "사용하기"}
                         </Button>
                     </UseContent>
                 </Content>
             </Container>
-
-            {isPopupOpen && <Popup onClose={handleClosePopup} onConfirm={handleUseCoupons}/>}
+            {isPopupOpen &&
+                <Popup onClose={handleClosePopup} onConfirm={handleUseCoupons}/>}
+            {isKakaoPopupOpen && (
+                <KakaoPopup
+                    onClose={handleCloseKakaoPopup}
+                    onTodayNoSee={handleCloseKakaoPopup}
+                />
+            )}
         </>
     );
 };
