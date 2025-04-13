@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef} from "react";
 import styled from "styled-components";
 import CouponItem from "../components/CouponItem";
-import ListHeader from "../components/ListHeader.tsx";
+import ListHeader from "../components/ListHeader";
 import { fetchCoupons } from "../api/api";
-import categoryMap from "../constants/CategoryMap.tsx";
-import {Coupon} from "../constants/Coupon.tsx";
-import kakaoLink from "../../public/currumi_kakao.svg";
+import categoryMap from "../constants/CategoryMap";
+import {Coupon} from "../constants/Coupon";
+import currumi_kakao from "../../public/currumi_kakao.svg";
+import {mixCoupons} from "../utils/CouponUtils";
+import PopupControl from "../components/PopupControl.tsx";
 
 const CouponPage: React.FC = () => {
     const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -24,7 +26,8 @@ const CouponPage: React.FC = () => {
             const data = await fetchCoupons(lastCouponId, categoryCode, 10);
             setCoupons((prev) => {
                 const newCoupons = [...prev, ...data.betaCouponResDtos];
-                return Array.from(new Map(newCoupons.map( c=> [c.betaCouponId, c])).values());
+                const uniqueCoupons = Array.from(new Map(newCoupons.map( c=> [c.betaCouponId, c])).values());
+                return mixCoupons(uniqueCoupons);
             }); // 기존 쿠폰 + 새로운 쿠폰 추가
 
             setHasNext(data.hasNext);
@@ -52,7 +55,6 @@ const CouponPage: React.FC = () => {
     // 무한 스크롤
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
-            console.log("Observer", entries[0]);
             if (entries[0].isIntersecting) {
                 loadCoupons(); // 마지막 요소가 화면에 보이면 데이터 요청
             }
@@ -65,12 +67,13 @@ const CouponPage: React.FC = () => {
 
     return (
         <Container>
+            <PopupControl/>
             <ListHeader
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
             />
-            <KakaoLink href="http://pf.kakao.com/_XkZnn" target="_blank" rel="noopener noreferrer">
-                <Image src={kakaoLink} alt="Kakao" />
+            <KakaoLink href="http://pf.kakao.com/_XkZnn" rel="noopener noreferrer">
+                <Image src={currumi_kakao} alt="Kakao" />
             </KakaoLink>
             <CouponList>
                 {coupons.length > 0 ? (

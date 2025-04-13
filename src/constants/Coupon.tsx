@@ -5,4 +5,5 @@ export interface Coupon{
         couponDetail: string;
         image: string;
         isUsed: boolean;
+        isPromise: boolean;
 }
