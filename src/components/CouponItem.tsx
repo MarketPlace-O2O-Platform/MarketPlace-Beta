@@ -65,7 +65,7 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                         >
                             {isUsed ? (
                                 <><KakaoIcon src={kakao} alt="Kakao Icon"/>
-                                    <br/>채널 추가
+                                    <br/>채널추가
                                 </>
                             ) : (
                                 "사용하기"
@@ -130,8 +130,9 @@ const Content = styled.div`
 
 const Text = styled.div`
     margin-left: 12px;
-    min-width: 65%;
-    max-width: 70%;
+    min-width: 60%;
+  
+    width: 70% ;
 `;
 
 const Store = styled.p`
@@ -143,7 +144,7 @@ const Store = styled.p`
     white-space: nowrap; /* 한 줄 유지 */
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis;
-    width: 90%;
+    width: 80%;
 
     @media (max-width: 400px) {
         font-size: 12px;
@@ -159,11 +160,11 @@ const CouponName = styled.p`
     white-space: nowrap; /* 한 줄 유지 */
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis;
-    width: 90%;
+    width: 70%;
 
     @media (max-width: 400px) {
         font-size: 14px;
-        width: 100%;
+        width: 80%;
     }
 `;
 
@@ -172,7 +173,7 @@ const Description = styled.p`
     color: #545454;
     font-weight: 400;
     margin: 2px 3px 0 0;
-    max-width: 80%;
+    max-width: 70%;
     @media (max-width: 400px) {
         font-size: 11px;
         width: 90%;
@@ -198,13 +199,12 @@ const UseContent = styled.div`
 `;
 
 const ActionButton = styled.button`
-  width: 60px;
-  min-width: fit-content;
+  width: 100%;
+  min-width: 100%;
   margin: 0 10%;
   font-size: 13px;
   font-weight: 700;
   line-height: 150%;
-  letter-spacing: 0.26px;
   border: none;
   cursor: pointer;
   border-radius: 4px;
