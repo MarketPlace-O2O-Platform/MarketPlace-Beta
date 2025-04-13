@@ -179,6 +179,7 @@ const Description = styled.p`
         width: 90%;
     }
 `;
+
 // 절개선
 const Divider = styled.div`
     height: 68px;
@@ -204,7 +205,7 @@ const ActionButton = styled.button`
   margin: 0 10%;
   font-size: 13px;
   font-weight: 700;
-  line-height: 150%;
+  line-height: 155%;
   border: none;
   cursor: pointer;
   border-radius: 4px;

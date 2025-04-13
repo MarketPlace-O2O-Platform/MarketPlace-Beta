@@ -10,7 +10,7 @@ const CouponPopup: React.FC<CouponPopupProps> = ({ onClose, onConfirm }) => {
     return (
         <Overlay onClick={onClose}>
             <PopupContainer onClick={(e) => e.stopPropagation()}>
-                <Message>이 쿠폰을 사용하시겠습니까?</Message>
+                <Message>쿠폰을 사용하시겠습니까?</Message>
                 <ButtonContainer>
                     <YesButton onClick={onConfirm}>Yes</YesButton>
                     <NoButton onClick={onClose}>No</NoButton>
@@ -34,10 +34,10 @@ const Overlay = styled.div`
 
 const PopupContainer = styled.div`
     background: white;
-    padding: 20px;
+    padding: 0 0 20px;
     border-radius: 8px;
     text-align: center;
-    width: 70%;
+    width: 65%;
     
     @media (max-width: 400px) {
         width: 65%;
@@ -61,10 +61,11 @@ const YesButton = styled.button`
     background: black;
     color: white;
     padding: 10px;
-    border: none;
-    width: 100%;
+    width: 90%;
     cursor: pointer;
     border-radius: 5px;
+    margin: 0 auto;
+    border: 1px solid black;
 `;
 
 const NoButton = styled.button`
@@ -72,9 +73,10 @@ const NoButton = styled.button`
     color: black;
     padding: 10px;
     border: 1px solid black;
-    width: 100%;
+    width: 90%;
     cursor: pointer;
     border-radius: 5px;
+    margin: 0 auto;
 `;
 
 export default CouponPopup;
