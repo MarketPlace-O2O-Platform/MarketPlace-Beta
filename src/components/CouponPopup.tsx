@@ -35,12 +35,12 @@ const Overlay = styled.div`
 const PopupContainer = styled.div`
     background: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     text-align: center;
-    width: 280px;
+    width: 70%;
     
     @media (max-width: 400px) {
-        width: 80%;
+        width: 65%;
     }
 `;
 

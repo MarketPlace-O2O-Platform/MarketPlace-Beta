@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Popup from "./CouponPopup";
 import KakaoPopup from "./KakaoPopup";
 import {callUseCoupons, fetchImage} from "../api/api";
-import {Coupon} from "../constants/Coupon.tsx";
+import {Coupon} from "../constants/Coupon";
+import kakao from "../assets/kakao.png";
 
 interface CouponItemProps {
     coupon: Coupon;
@@ -15,20 +16,12 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isKakaoPopupOpen, setIsKakaoPopupOpen] = useState(false);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
 
-    // 팝업열기
     const handleOpenPopup = () => {setIsPopupOpen(true); }
-    // 팝업닫기
     const handleClosePopup = () => {setIsPopupOpen(false);}
 
-    // KakaoInvitePopup 열기
-    const handleOpenKakaoPopup = () => {
-        setIsKakaoPopupOpen(true);
-    };
-
-    // 팝업 닫기
-    const handleCloseKakaoPopup = () => {
-        setIsKakaoPopupOpen(false);
-    };
+    // KakaoPopup 열기
+    const handleOpenKakaoPopup = () => {setIsKakaoPopupOpen(true);};
+    const handleCloseKakaoPopup = () => {setIsKakaoPopupOpen(false);};
 
     const handleUseCoupons = async () => {
         try {
@@ -67,9 +60,17 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
 
                     <UseContent>
                         <Divider/>
-                        <Button onClick={isUsed ? handleOpenKakaoPopup : handleOpenPopup}>
-                            {isUsed ? "친추하기" : "사용하기"}
-                        </Button>
+                        <ActionButton
+                            onClick={isUsed ? handleOpenKakaoPopup : handleOpenPopup}
+                        >
+                            {isUsed ? (
+                                <><KakaoIcon src={kakao} alt="Kakao Icon"/>
+                                    <br/>채널 추가
+                                </>
+                            ) : (
+                                "사용하기"
+                            )}
+                        </ActionButton>
                     </UseContent>
                 </Content>
             </Container>
@@ -107,7 +108,6 @@ const Image = styled.img`
     }
 `;
 
-
 const PlaceHolder = styled.div`
     width: 100px;
     height: 102px;
@@ -125,24 +125,25 @@ const Content = styled.div`
     align-items: center;
     justify-content: space-between;
     flex: 1;
-    width: 100%;
+ 
 `;
 
 const Text = styled.div`
-    flex-direction: column;
     margin-left: 12px;
+    min-width: 65%;
+    max-width: 70%;
 `;
 
 const Store = styled.p`
     color: #121212;
     font-size: 14px;
     font-weight: 600;
-    line-height: 140%; /* 19.6px */
+    line-height: 140%; 
     margin: 5px 3px 0 0;
     white-space: nowrap; /* 한 줄 유지 */
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis;
-    width: 130px;
+    width: 90%;
 
     @media (max-width: 400px) {
         font-size: 12px;
@@ -158,39 +159,34 @@ const CouponName = styled.p`
     white-space: nowrap; /* 한 줄 유지 */
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis;
-    width: 130px;
+    width: 90%;
 
     @media (max-width: 400px) {
-        /* 400px 이하일 때 */
         font-size: 14px;
-        width: 100px;
+        width: 100%;
     }
 `;
 
 const Description = styled.p`
-    font-size: 10px;
+    font-size: 12px;
     color: #545454;
     font-weight: 400;
     margin: 2px 3px 0 0;
-
+    max-width: 80%;
     @media (max-width: 400px) {
-        /* 400px 이하일 때 */
-        font-size: 8px;
-        width: 100px;
+        font-size: 11px;
+        width: 90%;
     }
 `;
-
-
+// 절개선
 const Divider = styled.div`
     height: 68px;
     border-right: 1px dashed #303030;
     margin: 0 0 0 8px;
-
     @media (max-width: 400px) {
         margin: 0 4px;
     }
 `;
-
 
 const UseContent = styled.div`
     display: flex;
@@ -199,27 +195,35 @@ const UseContent = styled.div`
     flex: 1; 
     width: 100%;
     justify-content: flex-end;  // 오른쪽으로 맞추고
-
 `;
 
-const Button = styled.button`
-    background: #ffffff;
-    color: ${({disabled}) => (disabled ? "#9B9B9B" : "#000")};
-    width: 60px;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 140%; /* 18.2px */
-    letter-spacing: 0.26px;
-    border: none;
-    min-width: fit-content;
-    margin: 0 10% ; // 버튼 양 공백을 줌 
+const ActionButton = styled.button`
+  width: 60px;
+  min-width: fit-content;
+  margin: 0 10%;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0.26px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 6px 10px;
+  background: #fff;
+  color: #000 ;
+ 
+  @media (max-width: 400px) {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+`;
 
-    
-    @media (max-width: 400px) {
-        font-size: 12px;
-        padding: 4px 8px;
-    }
-
+const KakaoIcon = styled.img`
+    width: 17px;
+    height: 17px;
+    margin-right: 4px;
+    vertical-align: middle;
+    border-radius: 20%;
 `;
 
 export default CouponItem;

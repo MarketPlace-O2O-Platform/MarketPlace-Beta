@@ -11,9 +11,9 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee,}) => {
         <Overlay>
             <PopupContainer>
                 <Title>
-                    쿠러미 채널 추가하고
+                    <BoldText> 쿠러미 채널 추가</BoldText> 하고
                     <br/>
-                    GS 1,000원 기프티콘 받기
+                    <BoldText>GS 1,000원 기프티콘 </BoldText>받기
                 </Title>
                 <Description>
                     신규 혜택을 놓치지 않고
@@ -23,7 +23,6 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee,}) => {
                 <ButtonGroup>
                     <ChannelButton
                         href="http://pf.kakao.com/_XkZnn"
-
                         rel="noopener noreferrer"
                     >
                         채널 추가하기
@@ -66,16 +65,21 @@ const PopupContainer = styled.div`
 
 const Title = styled.h2`
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 500;
     margin: 0 0 12px;
-    line-height: 1.4;
+    line-height: normal;
     color: #000;
+`;
+
+const BoldText = styled.span`
+    font-weight: 700; 
 `;
 
 const Description = styled.p`
     font-size: 14px;
     color: #9D9D9D;
-    margin: 0 0 24px;
+    line-height: normal;
+    margin: 0 0 20px;
 `;
 
 const ButtonGroup = styled.div`
@@ -90,8 +94,9 @@ const ChannelButton = styled.a`
     color: #000;
     font-weight: 600;
     padding: 8px;
-    border-radius: 4px;
+    border-radius: 5px;
     text-decoration: none;
+  
     &:hover {
         background-color: #fbcf0a;
     }
@@ -101,7 +106,7 @@ const TodayNoSeeButton = styled.button`
     background-color: transparent;
     color: #999;
     border: none;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     &:hover {
         color: #666;
@@ -111,8 +116,8 @@ const TodayNoSeeButton = styled.button`
 
 const CloseButton = styled.button`
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 6px;
+    right: 6px;
     background: transparent;
     font-size: 20px;
     border: none;
