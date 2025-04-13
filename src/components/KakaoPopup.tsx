@@ -23,7 +23,7 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee,}) => {
                 <ButtonGroup>
                     <ChannelButton
                         href="http://pf.kakao.com/_XkZnn"
-                        target="_blank"
+
                         rel="noopener noreferrer"
                     >
                         채널 추가하기
