@@ -45,6 +45,8 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
         setIsUsed(coupon.isUsed);
     }, [coupon.isUsed]);
 
+    const showChannelButton = !coupon.isPromise || (coupon.isPromise && isUsed);
+
     return (
         <>
             <Container>
@@ -61,9 +63,9 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                     <UseContent>
                         <Divider/>
                         <ActionButton
-                            onClick={isUsed ? handleOpenKakaoPopup : handleOpenPopup}
+                            onClick={showChannelButton ? handleOpenKakaoPopup : handleOpenPopup}
                         >
-                            {isUsed ? (
+                            {showChannelButton ? (
                                 <><KakaoIcon src={kakao} alt="Kakao Icon"/>
                                     <br/>채널추가
                                 </>
