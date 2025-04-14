@@ -18,8 +18,10 @@ export function mixCoupons(coupons: Coupon[]): Coupon[] {
         groupedByMarket[coupon.marketName].push(coupon);
     }
 
-    const marketNames = Object.keys(groupedByMarket);
-    const groupArray = marketNames.map((marketName) => groupedByMarket[marketName]);
+    const groupArray = Object.values(groupedByMarket)
+        .map((group) => group.sort((a, b) => a.betaCouponId - b.betaCouponId))
+        // 각 그룹의 첫 번째 쿠폰의 betaCouponId 값을 기준으로 그룹 정렬
+        .sort((a, b) => a[0].betaCouponId - b[0].betaCouponId);
 
     const result: Coupon[] = [];
     let i = 0;
@@ -30,7 +32,7 @@ export function mixCoupons(coupons: Coupon[]): Coupon[] {
             result.push(...groupArray[i]);
             i++;
         }
-        if (j < group2.length) {
+        for (let k = 0; k < 2 && j < group2.length; k++) {
             result.push(group2[j]);
             j++;
         }

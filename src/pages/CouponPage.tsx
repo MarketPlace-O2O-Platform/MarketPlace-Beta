@@ -25,9 +25,10 @@ const CouponPage: React.FC = () => {
             const categoryCode = categoryMap[selectedCategory] || "";
             const data = await fetchCoupons(lastCouponId, categoryCode, 10);
             setCoupons((prev) => {
-                const newCoupons = [...prev, ...data.betaCouponResDtos];
-                const uniqueCoupons = Array.from(new Map(newCoupons.map( c=> [c.betaCouponId, c])).values());
-                return mixCoupons(uniqueCoupons);
+                const newBatch = data.betaCouponResDtos;
+                const reorderedNewBatch = mixCoupons(newBatch);
+                // 기존의 prev 순서는 그대로 유지하고, 그 뒤에 재정렬한 새로운 배치를 추가
+                return [...prev, ...reorderedNewBatch];
             }); // 기존 쿠폰 + 새로운 쿠폰 추가
 
             setHasNext(data.hasNext);
