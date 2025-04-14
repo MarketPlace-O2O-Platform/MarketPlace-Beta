@@ -45,7 +45,24 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
         setIsUsed(coupon.isUsed);
     }, [coupon.isUsed]);
 
-    const showChannelButton = !coupon.isPromise || (coupon.isPromise && isUsed);
+    // 조건에 따른 버튼 텍스트와 클릭 동작 정의
+    let buttonText: string;
+    let buttonOnClick: () => void;
+
+    if (!coupon.isPromise) {
+        buttonText = "추가";
+        buttonOnClick = handleOpenKakaoPopup;
+    } else {
+        if (!isUsed) {
+            buttonText = "사용하기";
+            buttonOnClick = handleOpenPopup;
+        } else {
+            buttonText = "사용완료";
+            buttonOnClick = () => {};
+        }
+    }
+
+    const isKakaoStyle = !coupon.isPromise;
 
     return (
         <>
@@ -62,15 +79,13 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
 
                     <UseContent>
                         <Divider/>
-                        <ActionButton
-                            onClick={showChannelButton ? handleOpenKakaoPopup : handleOpenPopup}
-                            $showChannelButton={showChannelButton}
-                        >
-                            {showChannelButton ? (
-                                <><KakaoIcon src={kakao} alt="Kakao Icon"/>추가
+                        <ActionButton onClick={buttonOnClick} $isKakaoStyle={isKakaoStyle} $isUsed={isUsed}>
+                            {isKakaoStyle ? (
+                                <>
+                                    <KakaoIcon src={kakao} alt="Kakao Icon" />{buttonText}
                                 </>
                             ) : (
-                                "사용하기"
+                                buttonText
                             )}
                         </ActionButton>
                     </UseContent>
@@ -166,7 +181,7 @@ const CouponName = styled.p`
     white-space: nowrap; /* 한 줄 유지 */
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis;
-    width: 70%;
+    width: 75%;
 
     @media (max-width: 400px) {
         font-size: 14px;
@@ -175,7 +190,7 @@ const CouponName = styled.p`
 `;
 
 const Description = styled.p`
-    font-size: 12px;
+    font-size: 11px;
     color: #545454;
     font-weight: 400;
     margin: 2px 3px 0 0;
@@ -205,22 +220,23 @@ const UseContent = styled.div`
     justify-content: flex-end;  // 오른쪽으로 맞추고
 `;
 
-interface kakaoProps {
-    $showChannelButton: boolean;
+interface ActionButtonProps {
+    $isKakaoStyle: boolean;
+    $isUsed: boolean;
 }
 
-const ActionButton = styled.button<kakaoProps>`
+const ActionButton = styled.button<ActionButtonProps>`
   width: 100%;
   min-width: 100%;
   margin: 0 10%;
   font-size: 13px;
-  font-weight: ${({ $showChannelButton }) => ($showChannelButton ? "600" : "700")};
+  font-weight: ${({ $isKakaoStyle}) => ($isKakaoStyle ? "600" : "700")};
   line-height: 155%;
   border: none;
   border-radius: 4px;
-  padding: ${({ $showChannelButton }) => ($showChannelButton ? "3px 1px" : "6px 10px")};
-  background: ${({ $showChannelButton }) => ($showChannelButton ? "#fee500" : "#fff")};
-  color: #000 ;
+  padding: ${({ $isKakaoStyle }) => ($isKakaoStyle ? "3px 1px" : "6px 10px")};
+  background: ${({ $isKakaoStyle}) => ($isKakaoStyle? "#FFDD04" : "#fff")};
+  color: ${({ $isUsed}) => ($isUsed ? "#9B9B9B" : "#000")};
  
   @media (max-width: 400px) {
     font-size: 12px;
@@ -231,7 +247,6 @@ const ActionButton = styled.button<kakaoProps>`
 const KakaoIcon = styled.img`
     width: 17px;
     height: 17px;
-    margin-right: 1px;
     vertical-align: middle;
     border-radius: 20%;
 `;
