@@ -64,10 +64,10 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                         <Divider/>
                         <ActionButton
                             onClick={showChannelButton ? handleOpenKakaoPopup : handleOpenPopup}
+                            $showChannelButton={showChannelButton}
                         >
                             {showChannelButton ? (
-                                <><KakaoIcon src={kakao} alt="Kakao Icon"/>
-                                    <br/>채널추가
+                                <><KakaoIcon src={kakao} alt="Kakao Icon"/>추가
                                 </>
                             ) : (
                                 "사용하기"
@@ -77,7 +77,11 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                 </Content>
             </Container>
             {isPopupOpen &&
-                <Popup onClose={handleClosePopup} onConfirm={handleUseCoupons}/>}
+                <Popup
+                    onClose={handleClosePopup}
+                    onConfirm={handleUseCoupons}
+                    couponName={coupon.couponName}
+                 />}
             {isKakaoPopupOpen && (
                 <KakaoPopup
                     onClose={handleCloseKakaoPopup}
@@ -175,7 +179,7 @@ const Description = styled.p`
     color: #545454;
     font-weight: 400;
     margin: 2px 3px 0 0;
-    max-width: 70%;
+    max-width: 78%;
     @media (max-width: 400px) {
         font-size: 11px;
         width: 90%;
@@ -201,18 +205,21 @@ const UseContent = styled.div`
     justify-content: flex-end;  // 오른쪽으로 맞추고
 `;
 
-const ActionButton = styled.button`
+interface kakaoProps {
+    $showChannelButton: boolean;
+}
+
+const ActionButton = styled.button<kakaoProps>`
   width: 100%;
   min-width: 100%;
   margin: 0 10%;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: ${({ $showChannelButton }) => ($showChannelButton ? "600" : "700")};
   line-height: 155%;
   border: none;
-  cursor: pointer;
   border-radius: 4px;
-  padding: 6px 10px;
-  background: #fff;
+  padding: ${({ $showChannelButton }) => ($showChannelButton ? "3px 1px" : "6px 10px")};
+  background: ${({ $showChannelButton }) => ($showChannelButton ? "#fee500" : "#fff")};
   color: #000 ;
  
   @media (max-width: 400px) {
@@ -224,7 +231,7 @@ const ActionButton = styled.button`
 const KakaoIcon = styled.img`
     width: 17px;
     height: 17px;
-    margin-right: 4px;
+    margin-right: 1px;
     vertical-align: middle;
     border-radius: 20%;
 `;

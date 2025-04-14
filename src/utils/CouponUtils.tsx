@@ -31,10 +31,12 @@ export function mixCoupons(coupons: Coupon[]): Coupon[] {
         if (i < groupArray.length) {
             result.push(...groupArray[i]);
             i++;
+            console.log(result);
         }
         for (let k = 0; k < 2 && j < group2.length; k++) {
             result.push(group2[j]);
             j++;
+            console.log(result);
         }
     }
     return result;
