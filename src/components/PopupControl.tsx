@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import KakaoPopup from "./KakaoPopup";
 
 const PopupControl: React.FC = () => {
-    console.log("PopupControl");
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     // 컴포넌트가 마운트될 때 로컬 스토리지에 저장된 날짜와 오늘 날짜를 비교합니다.
