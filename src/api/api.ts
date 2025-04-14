@@ -43,7 +43,7 @@ export const login = async (studentId: string, password: string) => {
 // 쿠폰 목록 조회 API 추가
 export const fetchCoupons = async ( betaCouponId? : number,
                                     category?: string,
-                                    size: number = 10)
+                                    size: number = 20)
     : Promise<{ betaCouponResDtos: Coupon[], hasNext: boolean }>=> {
     try {
         // 요청할 쿼리 파라미터 생성
