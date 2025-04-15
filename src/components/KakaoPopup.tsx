@@ -108,6 +108,7 @@ const TodayNoSeeButton = styled.button`
     border: none;
     font-size: 12px;
     cursor: pointer;
+    text-decoration: underline;
     &:hover {
         color: #666;
         text-decoration: underline;
