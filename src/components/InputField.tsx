@@ -58,7 +58,8 @@ const Input = styled.input`
     border-radius: 2px;
     font-size: 14px;
     box-sizing: border-box;  // box 사이즈를 패딩이 포함된 크기로 조정
-
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
     &:focus {
         border: 1px solid black; 
         outline: none;
