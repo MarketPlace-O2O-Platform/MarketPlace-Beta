@@ -59,7 +59,7 @@ const CouponPage: React.FC = () => {
             if (entries[0].isIntersecting) {
                 loadCoupons(); // 마지막 요소가 화면에 보이면 데이터 요청
             }
-        }, { threshold: 1.0 });
+        }, { threshold: 0.8 });
 
         if (observerRef.current) observer.observe(observerRef.current);
         return () => observer.disconnect();
@@ -126,6 +126,7 @@ const LoadingRef = styled.div`
     padding: 20px;
     font-size: 14px;
     color: #777;
+    overflow: auto;
 `;
 
 export default CouponPage;

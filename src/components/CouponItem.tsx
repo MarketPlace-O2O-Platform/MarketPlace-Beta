@@ -2,24 +2,26 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import Popup from "./CouponPopup";
 import KakaoPopup from "./KakaoPopup";
-import {callUseCoupons, fetchImage} from "../api/api";
+import {callUseCoupons} from "../api/api";
 import {Coupon} from "../constants/Coupon";
 import kakao from "../assets/kakao.png";
+import LazyImage from "./LazyImage.tsx";
 
 interface CouponItemProps {
     coupon: Coupon;
 }
 
+const placeholderImg =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGN49+4dAAWYAsspex20AAAAAElFTkSuQmCC";
+
+
 const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isKakaoPopupOpen, setIsKakaoPopupOpen] = useState(false);
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
 
     const handleOpenPopup = () => {setIsPopupOpen(true); }
     const handleClosePopup = () => {setIsPopupOpen(false);}
-
-    // KakaoPopup 열기
     const handleOpenKakaoPopup = () => {setIsKakaoPopupOpen(true);};
     const handleCloseKakaoPopup = () => {setIsKakaoPopupOpen(false);};
 
@@ -33,24 +35,15 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
         }
     }
 
-    useEffect ( () => {
-        async function loadImage() {
-            const blob = await fetchImage(coupon.image);
-            setImageSrc(URL.createObjectURL(blob));
-        }
-        loadImage();
-    },[coupon.image]);
-
     useEffect(() => {
         setIsUsed(coupon.isUsed);
     }, [coupon.isUsed]);
 
-    // 조건에 따른 버튼 텍스트와 클릭 동작 정의
     let buttonText: string;
     let buttonOnClick: () => void;
 
     if (!coupon.isPromise) {
-        buttonText = "추가";
+        buttonText = "+";
         buttonOnClick = handleOpenKakaoPopup;
     } else {
         if (!isUsed) {
@@ -67,9 +60,11 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     return (
         <>
             <Container>
-                {imageSrc ?  (
-                    <Image src={imageSrc} alt={coupon.couponName}/>
-                ): (<PlaceHolder > Loading... </PlaceHolder>)}
+                <LazyImage
+                    src={coupon.image}
+                    placeholder={placeholderImg}
+                    alt={coupon.marketName}
+                />
                 <Content>
                     <Text>
                         <Store>{coupon.marketName}</Store>
@@ -114,31 +109,6 @@ const Container = styled.div`
     margin: 16px 20px;
     height: 102px;
 `;
-
-
-const Image = styled.img`
-    width: 102px;
-    height: 102px;
-    object-fit: cover;
-
-    @media (max-width: 400px) {
-        width: 80px;
-        height: 102px;
-        object-fit: cover;
-
-    }
-`;
-
-const PlaceHolder = styled.div`
-    width: 100px;
-    height: 102px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #eee;
-    font-size: 12px;
-    color: #999;
-`
 
 const Content = styled.div`
     display: flex;
@@ -230,7 +200,7 @@ const ActionButton = styled.button<ActionButtonProps>`
   min-width: 100%;
   margin: 0 10%;
   font-size: 13px;
-  font-weight: ${({ $isKakaoStyle}) => ($isKakaoStyle ? "600" : "700")};
+  font-weight: ${({ $isKakaoStyle}) => ($isKakaoStyle ? "500" : "700")};
   line-height: 155%;
   border: none;
   border-radius: 4px;
