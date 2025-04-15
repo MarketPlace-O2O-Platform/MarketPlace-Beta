@@ -43,7 +43,7 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     let buttonOnClick: () => void;
 
     if (!coupon.isPromise) {
-        buttonText = "+";
+        buttonText = "추가";
         buttonOnClick = handleOpenKakaoPopup;
     } else {
         if (!isUsed) {
