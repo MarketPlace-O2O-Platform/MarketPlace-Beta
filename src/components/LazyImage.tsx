@@ -1,14 +1,14 @@
-// LazyImage.tsx
 import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import {fetchImage} from "../api/api.ts";
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
    src: string;
-    placeholder?: string; // 기본 placeholder 이미지 URL (옵션)
+   placeholder?: string;
+   onImageLoad?: (url: string) => void;
 }
 
-const LazyImage: React.FC<LazyImageProps> = ({ src, placeholder, alt, ...rest }) => {
+const LazyImage: React.FC<LazyImageProps> = ({ src, placeholder, onImageLoad, alt, ...rest }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const imgRef = useRef<HTMLImageElement>(null);
@@ -42,6 +42,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, placeholder, alt, ...rest })
                 const objectUrl = URL.createObjectURL(blob);
                 setImageUrl(objectUrl);
                 setLoaded(true);
+                onImageLoad?.(objectUrl);
             } catch (error) {
                 console.error("이미지 로드 실패:", src, error);
             }
@@ -73,6 +74,7 @@ const shimmer = keyframes`
 
 const StyledImage = styled.img`
     object-fit: cover;
+    display: block;
     transition: filter 0.4s ease-out, opacity 0.4s ease-out;
         
     &.loading {

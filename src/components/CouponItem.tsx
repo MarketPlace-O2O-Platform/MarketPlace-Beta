@@ -19,6 +19,7 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isKakaoPopupOpen, setIsKakaoPopupOpen] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const handleOpenPopup = () => {setIsPopupOpen(true); }
     const handleOpenKakaoPopup = () => {setIsKakaoPopupOpen(true);};
@@ -28,11 +29,15 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
         try {
             await callUseCoupons(coupon.betaCouponId);
             setIsUsed(true);
-            setIsPopupOpen(false);
+           // setIsPopupOpen(false);
         } catch (error) {
             console.log(error);
         }
     }
+
+    const handleImageLoad = (url: string) => {
+        setImageUrl(url);
+    };
 
     useEffect(() => {
         setIsUsed(coupon.isUsed);
@@ -62,6 +67,7 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                     src={coupon.image}
                     placeholder={placeholderImg}
                     alt={coupon.marketName}
+                    onImageLoad={handleImageLoad}
                 />
                 <Content>
                     <Text>
@@ -86,9 +92,10 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
             </Container>
             {isPopupOpen && (
                 <DetailPopup
-                    coupon={{...coupon, image: coupon.image }}
+                    coupon={coupon}
                     onClose = {() => setIsPopupOpen(false)}
                     onConfirm = { () => handleUseCoupons() }
+                    imageUrl = {imageUrl!}
                     />)}
             {isKakaoPopupOpen && (
                 <KakaoPopup

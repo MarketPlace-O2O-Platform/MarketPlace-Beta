@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Coupon } from "../constants/Coupon";
-import LazyImage from "./LazyImage";
 
 interface CouponPopupProps {
     coupon: Coupon;
     onClose: () => void;
     onConfirm: () => void;
+    imageUrl : string;
 }
 
-const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm }) => {
+const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm , imageUrl}) => {
     const [isConfirming, setIsConfirming] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
@@ -26,12 +26,13 @@ const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm })
         setIsConfirming(true);
     };
 
+
     const handleConfirm = () => {
         onConfirm();
         setIsUsed(true);
         setIsConfirming(false);
         setShowToast(true);
-        setTimeout(() => setShowToast(false), 2500);
+        setTimeout(() => setShowToast(false), 8000);
     };
 
     return (
@@ -40,7 +41,14 @@ const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm })
                 <Dialog onClick={(e) => e.stopPropagation()}>
                     <CloseButton onClick={onClose}>×</CloseButton>
                     <ImageWrapper>
-                        <StyledImage src={coupon.image} alt={coupon.couponName} />
+                        {!imageUrl ?
+                            <ImagePlaceholder />
+                            :
+                            <StyledImage
+                            src={imageUrl!}
+                            alt={coupon.couponName}
+                            />
+                        }
                     </ImageWrapper>
                     <Body>
                         <MarketName>{coupon.marketName}</MarketName>
@@ -64,9 +72,12 @@ const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm })
                                 </ButtonRow>
                             </>
                         ) : (
+                            <>
                             <ActionButton onClick={handleUseClick} disabled={isUsed}>
                                 {isUsed ? "사용완료" : "쿠폰 사용하기"}
                             </ActionButton>
+                            {showToast && <InlineToast> 쿠폰이 정상적으로 사용되었습니다.</InlineToast>}
+                            </>
                         )}
                         <Note>
                             ※ <BoldNote>매장에서 </BoldNote> 쿠폰 사용 시 [쿠폰 사용하기] 버튼을 눌러주세요.
@@ -74,8 +85,6 @@ const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm })
                     </Body>
                 </Dialog>
             </Overlay>
-
-            {showToast && <Toast> ✅ 쿠폰이 정상적으로 사용되었습니다.</Toast>}
         </>
     );
 };
@@ -120,14 +129,26 @@ const ImageWrapper = styled.div`
     margin: 0 auto;
 `;
 
-const StyledImage = styled(LazyImage)`
+
+const ImagePlaceholder = styled.div`
+  width: 50%;
+  height: 50%;
+  background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s infinite ease-in-out;
+  border-radius: 8px;
+`;
+
+const StyledImage = styled.img`
     aspect-ratio: 1 / 1;
+    width: 50%;
+    height: 50%;
     max-width: 50%;
     max-height: 50%;
     display: block;
     margin-top: 26px;
     object-fit: cover;
-
+    
     @media (max-width: 400px) {
         width: 50%;
         height: 50%;
@@ -248,16 +269,19 @@ const ConfirmBtn = styled.button`
   font-weight: 600;
 `;
 
-const Toast = styled.div`
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: #fff;
-  padding: 12px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  z-index: 1500;
-  white-space: nowrap;
+const InlineToast = styled.p`
+    font-size: 12px;
+    color: #00b300;
+    font-weight: 600;
+    margin-top: 4px;
+    animation: fadeIn 0.5s ease-in;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 `;
