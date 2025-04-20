@@ -20,11 +20,9 @@ const PopupControl: React.FC = () => {
 
     // "오늘 보지 않기" 버튼 클릭 시 오늘 날짜를 로컬 스토리지에 저장
     const handleTodayNoSee = () => {
-        console.log("Button Clicked"); // 디버그 로그 추가
         const today = new Date().toDateString();
         localStorage.setItem("kakaoPopupNoShowDate", today);
-        console.log("저장된 날짜:", localStorage.getItem("kakaoPopupNoShowDate"));
-
+      //  console.log("저장된 날짜:", localStorage.getItem("kakaoPopupNoShowDate"));
         setShowPopup(false);
     };
 

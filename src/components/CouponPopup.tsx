@@ -14,7 +14,7 @@ const CouponPopup: React.FC<CouponPopupProps> = ({ onClose, onConfirm, couponNam
                 <Message>
                     "{couponName}"
                     <br/>
-                    쿠폰을 사용하시겠습니까?
+                    쿠폰은 한 번만 쓸 수 있어요. 쿠폰을 사용하시겠어요?
                 </Message>
                 <ButtonContainer>
                     <YesButton onClick={onConfirm}>Yes</YesButton>

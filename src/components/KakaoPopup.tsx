@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 interface KakaoPopupProps {
@@ -6,18 +6,41 @@ interface KakaoPopupProps {
     onTodayNoSee: () => void;
 }
 
-const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee,}) => {
+const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee }) => {
+    const [isHidden, setIsHidden] = useState(false);
+
+    useEffect(() => {
+        const origOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = origOverflow;
+        };
+    }, []);
+
+    useEffect(() => {
+        const today = new Date().toDateString();
+        const storedDate = localStorage.getItem("kakaoPopupNoShowDate");
+        setIsHidden(storedDate === today);
+    }, []);
+
+    const handleTodayNoSee = () => {
+        onTodayNoSee();
+        setIsHidden(true);
+        onClose();
+    };
+
     return (
-        <Overlay>
-            <PopupContainer>
+        <Overlay onClick={onClose}>
+            <PopupContainer onClick={(e) => e.stopPropagation()}>
+                <CloseButton onClick={onClose}>×</CloseButton>
                 <Title>
-                    <BoldText> 쿠러미 채널 추가</BoldText> 하고
-                    <br/>
-                    <BoldText>GS 1,000원 기프티콘 </BoldText>받기
+                    <BoldText>쿠러미 채널 추가</BoldText>만 해도
+                    <br />
+                    <BoldText>GS 1,000원 기프티콘</BoldText>
                 </Title>
                 <Description>
                     신규 혜택을 놓치지 않고
-                    <br/>
+                    <br />
                     확인할 수 있어요!
                 </Description>
                 <ButtonGroup>
@@ -27,11 +50,12 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee,}) => {
                     >
                         채널 추가하기
                     </ChannelButton>
-                    <TodayNoSeeButton onClick={onTodayNoSee}>
-                        오늘 보지 않기
-                    </TodayNoSeeButton>
+                    {!isHidden && (
+                        <TodayNoSeeButton onClick={handleTodayNoSee}>
+                            오늘 보지 않기
+                        </TodayNoSeeButton>
+                    )}
                 </ButtonGroup>
-                <CloseButton onClick={onClose}>×</CloseButton>
             </PopupContainer>
         </Overlay>
     );
@@ -45,7 +69,7 @@ const Overlay = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,28 +82,28 @@ const PopupContainer = styled.div`
     max-width: 80%;
     background: #fff;
     border-radius: 8px;
-    padding: 24px;
+    padding: 20px;
     box-sizing: border-box;
     text-align: center;
 `;
 
 const Title = styled.h2`
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
-    margin: 0 0 12px;
+    margin: 12px 0;
     line-height: normal;
     color: #000;
 `;
 
 const BoldText = styled.span`
-    font-weight: 700; 
+    font-weight: 700;
 `;
 
 const Description = styled.p`
     font-size: 14px;
-    color: #9D9D9D;
+    color: #9d9d9d;
     line-height: normal;
-    margin: 0 0 20px;
+    margin: 0 0 15px;
 `;
 
 const ButtonGroup = styled.div`
@@ -93,10 +117,10 @@ const ChannelButton = styled.a`
     background-color: #fee500;
     color: #000;
     font-weight: 600;
-    padding: 8px;
+    padding: 6px;
     border-radius: 5px;
     text-decoration: none;
-  
+
     &:hover {
         background-color: #fbcf0a;
     }
@@ -124,7 +148,4 @@ const CloseButton = styled.button`
     border: none;
     color: #aaa;
     cursor: pointer;
-    &:hover {
-        color: #333;
-    }
 `;

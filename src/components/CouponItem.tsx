@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import Popup from "./CouponPopup";
 import KakaoPopup from "./KakaoPopup";
 import {callUseCoupons} from "../api/api";
 import {Coupon} from "../constants/Coupon";
 import kakao from "../assets/kakao.png";
 import LazyImage from "./LazyImage.tsx";
+import DetailPopup from "./DetailPopup";
 
 interface CouponItemProps {
     coupon: Coupon;
@@ -21,7 +21,6 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isKakaoPopupOpen, setIsKakaoPopupOpen] = useState(false);
 
     const handleOpenPopup = () => {setIsPopupOpen(true); }
-    const handleClosePopup = () => {setIsPopupOpen(false);}
     const handleOpenKakaoPopup = () => {setIsKakaoPopupOpen(true);};
     const handleCloseKakaoPopup = () => {setIsKakaoPopupOpen(false);};
 
@@ -54,13 +53,12 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
             buttonOnClick = () => {};
         }
     }
-
     const isKakaoStyle = !coupon.isPromise;
 
     return (
         <>
             <Container>
-                <LazyImage
+                <Image
                     src={coupon.image}
                     placeholder={placeholderImg}
                     alt={coupon.marketName}
@@ -86,16 +84,15 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                     </UseContent>
                 </Content>
             </Container>
-            {isPopupOpen &&
-                <Popup
-                    onClose={handleClosePopup}
-                    onConfirm={handleUseCoupons}
-                    couponName={coupon.couponName}
-                 />}
+            {isPopupOpen && (
+                <DetailPopup
+                    coupon={{...coupon, image: coupon.image }}
+                    onClose = {() => setIsPopupOpen(false)}
+                    onConfirm = { () => handleUseCoupons() }
+                    />)}
             {isKakaoPopupOpen && (
                 <KakaoPopup
-                    onClose={handleCloseKakaoPopup}
-                    onTodayNoSee={handleCloseKakaoPopup}
+                    onClose={handleCloseKakaoPopup} onTodayNoSee={handleCloseKakaoPopup}
                 />
             )}
         </>
@@ -108,6 +105,17 @@ const Container = styled.div`
     overflow: hidden;
     margin: 16px 20px;
     height: 102px;
+`;
+
+const Image = styled(LazyImage)`
+    width: 102px;
+    height: 102px;
+
+    @media (max-width: 400px) {
+        width: 80px;
+        height: 102px;
+        object-fit: cover;
+    }
 `;
 
 const Content = styled.div`

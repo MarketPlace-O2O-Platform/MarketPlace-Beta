@@ -14,8 +14,6 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, placeholder, alt, ...rest })
     const imgRef = useRef<HTMLImageElement>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-
-
     // IntersectionObserver를 이용한 뷰포트 진입 감지
     useEffect(() => {
         const imgElement = imgRef.current;
@@ -74,8 +72,6 @@ const shimmer = keyframes`
 `;
 
 const StyledImage = styled.img`
-    width: 102px;
-    height: 102px;
     object-fit: cover;
     transition: filter 0.4s ease-out, opacity 0.4s ease-out;
         
@@ -96,11 +92,7 @@ const StyledImage = styled.img`
     filter: blur(0);
     opacity: 1;
   }
-    @media (max-width: 400px) {
-        width: 80px;
-        height: 102px;
-        object-fit: cover;
-    }
+
 `;
 
 export default LazyImage;
