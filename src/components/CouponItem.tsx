@@ -14,6 +14,12 @@ interface CouponItemProps {
 const placeholderImg =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGN49+4dAAWYAsspex20AAAAAElFTkSuQmCC";
 
+declare global {
+    interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        gtag: (...args: any[]) => void;
+    }
+}
 
 const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isUsed, setIsUsed] = useState(coupon.isUsed);
@@ -21,7 +27,21 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const [isKakaoPopupOpen, setIsKakaoPopupOpen] = useState(false);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-    const handleOpenPopup = () => {setIsPopupOpen(true); }
+    const handleOpenPopup = () => {
+        setIsPopupOpen(true);
+
+        const params = new URLSearchParams(window.location.search);
+        const source = params.get("utm_source");
+        const campaign = params.get("utm_campaign");
+
+        window.gtag("event", "open_coupon_popup", {
+            coupon_id: coupon.betaCouponId,
+            source: source || "unknown",
+            campaign: campaign || "unknown",
+            market_name: coupon.marketName,
+            coupon_name: coupon.couponName,
+        });
+    }
     const handleOpenKakaoPopup = () => {setIsKakaoPopupOpen(true);};
     const handleCloseKakaoPopup = () => {setIsKakaoPopupOpen(false);};
 
