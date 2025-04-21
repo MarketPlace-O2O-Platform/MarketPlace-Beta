@@ -91,6 +91,7 @@ const Content = styled.div`
     width: 100%;
     max-width: 400px;
     text-align: center;
+    padding: 0 16px;
 `;
 
 const Header = styled.div`
