@@ -30,14 +30,13 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
     const handleOpenPopup = () => {
         setIsPopupOpen(true);
 
-        const params = new URLSearchParams(window.location.search);
-        const source = params.get("utm_source");
-        const campaign = params.get("utm_campaign");
+        const source = localStorage.getItem("utm_source") || "unknown";
+        const campaign = localStorage.getItem("utm_campaign") || "unknown";
 
         window.gtag("event", "open_coupon_popup", {
             coupon_id: coupon.betaCouponId,
-            source: source || "unknown",
-            campaign: campaign || "unknown",
+            source: source,
+            campaign: campaign,
             market_name: coupon.marketName,
             coupon_name: coupon.couponName,
         });

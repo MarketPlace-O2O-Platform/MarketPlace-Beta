@@ -47,6 +47,15 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee }) => {
                     <ChannelButton
                         href="http://pf.kakao.com/_XkZnn"
                         rel="noopener noreferrer"
+                        onClick={() => {
+                            const source = localStorage.getItem("utm_source") || "unknown";
+                            const campaign = localStorage.getItem("utm_campaign") || "unknown";
+
+                            window.gtag?.("event", "click_kakao_channel", {
+                                source,
+                                campaign,
+                            });
+                        }}
                     >
                         채널 추가하기
                     </ChannelButton>
