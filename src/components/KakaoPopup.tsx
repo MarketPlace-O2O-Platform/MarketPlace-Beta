@@ -51,18 +51,21 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ coupon, onClose, onTodayNoSee }
                         rel="noopener noreferrer"
                         onClick={() => {
                             const source = localStorage.getItem("utm_source") || "unknown";
+                            const medium = localStorage.getItem("utm_medium") || "unknown";
                             const campaign = localStorage.getItem("utm_campaign") || "unknown";
 
                             if (coupon) {
                                 window.gtag?.("event", "click_kakao_channel", {
-                                    source,
-                                    campaign,
+                                    source: source,
+                                    medium: medium,
+                                    campaign: campaign,
                                     market_name: coupon.marketName,
                                     coupon_name: coupon.couponName,
                                 });
                             } else {
                                 window.gtag?.("event", "click_kakao_channel", {
                                     source,
+                                    medium,
                                     campaign,
                                 });
                             }

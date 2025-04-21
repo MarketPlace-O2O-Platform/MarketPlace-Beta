@@ -34,12 +34,14 @@ const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm , 
         setShowToast(true);
 
         const source = localStorage.getItem("utm_source") || "unknown";
+        const medium = localStorage.getItem("utm_medium") || "unknown";
         const campaign = localStorage.getItem("utm_campaign") || "unknown";
 
         window.gtag?.("event", "use_coupon", {
             coupon_id: coupon.betaCouponId,
-            source,
-            campaign,
+            source: source,
+            medium: medium,
+            campaign: campaign,
             market_name: coupon.marketName,
             coupon_name: coupon.couponName,
         });
