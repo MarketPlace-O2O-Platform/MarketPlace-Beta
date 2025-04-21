@@ -44,7 +44,10 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
         });
     }
     const handleOpenKakaoPopup = () => {setIsKakaoPopupOpen(true);};
-    const handleCloseKakaoPopup = () => {setIsKakaoPopupOpen(false);};
+    const handleCloseKakaoPopup = () => {
+
+        setIsKakaoPopupOpen(false);
+    };
 
     const handleUseCoupons = async () => {
         try {
@@ -121,7 +124,8 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
             {isKakaoPopupOpen && (
                 <KakaoPopup
                     coupon={coupon}
-                    onClose={handleCloseKakaoPopup} onTodayNoSee={handleCloseKakaoPopup}
+                    onClose={handleCloseKakaoPopup}
+                    onTodayNoSee={handleCloseKakaoPopup}
                 />
             )}
         </>

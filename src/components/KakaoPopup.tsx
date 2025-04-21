@@ -9,7 +9,10 @@ interface KakaoPopupProps {
 }
 
 const KakaoPopup: React.FC<KakaoPopupProps> = ({ coupon, onClose, onTodayNoSee }) => {
-    const [isHidden, setIsHidden] = useState(false);
+    const [isHidden, setIsHidden] = useState<boolean>(() => {
+        const today = new Date().toDateString();
+        return localStorage.getItem("kakaoPopupNoShowDate") === today;
+    });
 
     useEffect(() => {
         const origOverflow = document.body.style.overflow;
@@ -26,6 +29,9 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ coupon, onClose, onTodayNoSee }
     }, []);
 
     const handleTodayNoSee = () => {
+        const today = new Date().toDateString();
+        localStorage.setItem("kakaoPopupNoShowDate", today);
+
         onTodayNoSee();
         setIsHidden(true);
         onClose();
