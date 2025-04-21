@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {Coupon} from "../constants/Coupon.tsx";
 
 interface KakaoPopupProps {
-    coupon: Coupon;
+    coupon?: Coupon;
     onClose: () => void;
     onTodayNoSee: () => void;
 }
@@ -53,13 +53,21 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ coupon, onClose, onTodayNoSee }
                             const source = localStorage.getItem("utm_source") || "unknown";
                             const campaign = localStorage.getItem("utm_campaign") || "unknown";
 
-                            window.gtag?.("event", "click_kakao_channel", {
-                                source,
-                                campaign,
-                                market_name: coupon.marketName,
-                                coupon_name: coupon.couponName,
-                            });
+                            if (coupon) {
+                                window.gtag?.("event", "click_kakao_channel", {
+                                    source,
+                                    campaign,
+                                    market_name: coupon.marketName,
+                                    coupon_name: coupon.couponName,
+                                });
+                            } else {
+                                window.gtag?.("event", "click_kakao_channel", {
+                                    source,
+                                    campaign,
+                                });
+                            }
                         }}
+
                     >
                         채널 추가하기
                     </ChannelButton>
