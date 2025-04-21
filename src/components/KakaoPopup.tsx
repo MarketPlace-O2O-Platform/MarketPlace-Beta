@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import {Coupon} from "../constants/Coupon.tsx";
 
 interface KakaoPopupProps {
+    coupon: Coupon;
     onClose: () => void;
     onTodayNoSee: () => void;
 }
 
-const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee }) => {
+const KakaoPopup: React.FC<KakaoPopupProps> = ({ coupon, onClose, onTodayNoSee }) => {
     const [isHidden, setIsHidden] = useState(false);
 
     useEffect(() => {
@@ -54,6 +56,8 @@ const KakaoPopup: React.FC<KakaoPopupProps> = ({ onClose, onTodayNoSee }) => {
                             window.gtag?.("event", "click_kakao_channel", {
                                 source,
                                 campaign,
+                                market_name: coupon.marketName,
+                                coupon_name: coupon.couponName,
                             });
                         }}
                     >

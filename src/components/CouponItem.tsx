@@ -118,6 +118,7 @@ const CouponItem: React.FC<CouponItemProps> = ({coupon}) => {
                     />)}
             {isKakaoPopupOpen && (
                 <KakaoPopup
+                    coupon={coupon}
                     onClose={handleCloseKakaoPopup} onTodayNoSee={handleCloseKakaoPopup}
                 />
             )}

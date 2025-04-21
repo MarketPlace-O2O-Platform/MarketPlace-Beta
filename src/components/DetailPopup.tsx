@@ -32,6 +32,18 @@ const DetailPopup: React.FC<CouponPopupProps> = ({ coupon, onClose, onConfirm , 
         setIsUsed(true);
         setIsConfirming(false);
         setShowToast(true);
+
+        const source = localStorage.getItem("utm_source") || "unknown";
+        const campaign = localStorage.getItem("utm_campaign") || "unknown";
+
+        window.gtag?.("event", "use_coupon", {
+            coupon_id: coupon.betaCouponId,
+            source,
+            campaign,
+            market_name: coupon.marketName,
+            coupon_name: coupon.couponName,
+        });
+
         setTimeout(() => setShowToast(false), 8000);
     };
 
